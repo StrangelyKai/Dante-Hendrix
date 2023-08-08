@@ -1,0 +1,82 @@
+﻿/***
+ *      _   _          __  __ ______ _______ ______          _____ _    _ 
+ *     | \ | |   /\   |  \/  |  ____|__   __|  ____|   /\   / ____| |  | |
+ *     |  \| |  /  \  | \  / | |__     | |  | |__     /  \ | |    | |__| |
+ *     | . ` | / /\ \ | |\/| |  __|    | |  |  __|   / /\ \| |    |  __  |
+ *     | |\  |/ ____ \| |  | | |____   | |  | |____ / ____ \ |____| |  | |
+ *     |_| \_/_/    \_\_|  |_|______|  |_|  |______/_/    \_\_____|_|  |_|
+ *                                                                        
+ *                                                                        
+ */
+
+
+//---------------------------The User's Name--------------------------
+
+//--OnTeachName
+//This is called from the config menu in the main character's double click menu when the user says they want to change their name. If you look in menu.dic you'll see the code leading to here.
+
+OnTeachName	
+{
+	if reference0 == "TEACHNAME" //ignore this
+		{
+		"\0\s[0]Oh? You wanna tell me your name? Go ahead!\![open,inputbox,OnNameTeach,-1]\e"
+		//This is the bit of dialogue you can rewrite if you want. Note that this line ends with \![open,inputbox,OnNameTeach,-1]. You may recognize this from bootend.dic. Essentially, this will lead to the next function. Make sure you don't delete that tag! The rest you can do whatever with though.
+		}
+	else
+		{
+		//This else statement is empty, and I'm mostly pointing this out to mention that you can do this too with your if/elses if you want! An empty else will simply cause your ghost not to do anything. I wouldn't get too crazy with this though.
+		}
+}
+
+
+//--OnNameTeach
+
+OnNameTeach
+{
+	tempname = reference0 //this stores the name value from reference0 in tempname
+	reference0 = TOLOWER(reference0) //changes it to lowercase
+	reference0 = REPLACE(reference0," ","") //removes spaces
+	reference0 = REPLACE(reference0,".","") //removes periods
+	reference0 = REPLACE(reference0,"-","") //removes dashes
+	
+	//Those extra TOLOWER/REPLACE things up there basically clean up the user's input so you don't have to check for Girl, GIRL, girl, GiRl, etc. It'll make it much easier to check for any specific name, since you won't have to account for any edge cases. Note that the names you will be checking for should be in all lowercase, however.
+	
+	if reference0 == "Dante" //this checks to see if the user input any variation of the name "Dante"
+	{
+		"\0\s[0]That's my name.\w8 That might be confusing. You should try again.\![open,inputbox,OnNameTeach,-1]"
+		//Note here that it's using the same tag as above to reopen the text box to let the user put in another name. You can replace the dialogue with whatever as long as you keep the \![open,inputbox,OnNameTeach,-1] tag.
+	}
+	
+	elseif reference0 == "" //This is if the user doesn't put in a name at all, since that'd also get awkward in dialogue.
+	{
+		username = "USER" //this sets the user's name to USER.
+		
+		"\0\s[0]You didn't put in anything. I will call you USER.\e"
+		//You can change this snip to whatever.
+	}
+	else 
+	{
+		{
+	     username = tempname
+	     "\0\s[0]The user is now called %(username).\e"
+	    }
+	}
+}
+
+//--NameDone
+//This is the final bit of dialogue your ghosts will have when the user changes their name. There is a special section here for when the user first boots the ghost.
+
+NameDone
+{
+	if firstboot == 1 //this checks for the flag that was set during the firstboot sequence
+	{
+		firstboot = 0 //this turns the flag off
+		
+		//This dialogue will display the first time the user puts in their name. You might want to add some closing thoughts to the introduction your ghost had in OnFirstBoot, or directions about how to use the ghost, or something like that. It's up to you!
+		"\0\s[0]Thanks for letting me know %(username)!\e"
+	}
+	else
+	{
+	"\0\s[0]I will call you %(username).\e"
+	}	
+}
