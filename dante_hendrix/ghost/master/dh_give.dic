@@ -1,0 +1,47 @@
+/***
+ *       _____ _______      ________   __  __ ______ _   _ _    _ 
+ *      / ____|_   _\ \    / /  ____| |  \/  |  ____| \ | | |  | |
+ *     | |  __  | |  \ \  / /| |__    | \  / | |__  |  \| | |  | |
+ *     | | |_ | | |   \ \/ / |  __|   | |\/| |  __| | . ` | |  | |
+ *     | |__| |_| |_   \  /  | |____  | |  | | |____| |\  | |__| |
+ *      \_____|_____|   \/   |______| |_|  |_|______|_| \_|\____/ 
+ *                                                                
+ *                                                                
+ */
+
+
+//================================================= GIVE MENU ======================================================
+Select.givesomething
+{
+	"* (You give him...)\n\n[half]/
+	\![*]\q[Some strawberries,givefavfood]\n/
+	//\![*]\q[Googly Eyes,givegooglyeyes]\n\n[half]/
+	\![*]\q[Back?,backtomenu]"
+}
+
+Select.givefavfood
+{
+	if DiscoveredFavouriteFood == 1
+	{
+		"\0\s[0]Aw! You remembered these are my favourite!\n\n[half]* (He stuffs them away in his pocket)\n\n[half]"
+		--
+	    "\![*]\q[Give something else?,givesomething]\n/
+	    \![*]\q[Nevermind,closemenu]\n"
+	}
+	else
+	{
+		DiscoveredFavouriteFood = 1
+		--
+		"\0\s[0]How'd you know these are my favourite?\n\n[half]* (He stuffs them away in his pocket)\n\n[half]"
+		--
+	    "\![*]\q[Give something else?,givesomething]\n/
+	    \![*]\q[Nevermind,closemenu]\n"
+	}
+}
+
+Select.givegooglyeyes
+{
+	GooglyEyed = 1
+	--
+	"\0\s[110].\w8.\w8.\w8 What?"
+}
